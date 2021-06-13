@@ -1,5 +1,23 @@
 
 
+
+# changing the makefile for deep learnign training etc!
+# automate: run multipe training as cron job at certain time, collect results over night
+
+# data preparation: MNIST dataset used, so not necessary
+# training the model with dataset
+# comparing the accuracy with each other on tensorboard
+# classify the MNIST dataset with the trained model and plot confusion matrix
+
+# run train script, evtl with diff parameters; let it start by a cron job ()
+# idea: create a folder containing a experiments.json file, cron job will grab it at 1 O'clock; if present -> perform training; otherwise not
+# next day: compare results with each other 
+
+
+
+
+
+
 # ------------- Installation  ------------------------------------
 .Phony: install
 

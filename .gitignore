@@ -1,11 +1,11 @@
 
 
 results*
-data/
 resources/
 runs/
 todo.txt
 result1/
+
 # IDEs
 .idea/
 .vscode/
