@@ -1,21 +1,22 @@
 """ the confusion matrix of the MNIST dataset of the trained neural net (with
 best hyperparameters) is calculated and plotted. """
+import time
+
+import matplotlib.pyplot as plt
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from torch.utils.tensorboard import SummaryWriter
-from torch.utils.data import DataLoader
+from sklearn.metrics import confusion_matrix
+
+from model import Network
+from utils.plotcm import plot_confusion_matrix
+# from torch.utils.data import DataLoader
+# from torch.utils.tensorboard import SummaryWriter
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True)
 
-import time
 start_time = time.time()
 
-import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
-from utils.plotcm import plot_confusion_matrix
-
-from model import Network
 
 # add more analytical tools
 # predictions (on cpu):
@@ -23,26 +24,26 @@ from model import Network
 network = Network()
 network.load_state_dict(torch.load('results/SavedModel.pth'))  # loads the saved models weights etc.
 
-def get_num_correct(preds, labels):
+
+def get_num_correct(preds: torch.Tensor, labels: torch.Tensor) -> int:
     return preds.argmax(dim=1).eq(labels).sum().item()
 
+
 train_set = torchvision.datasets.FashionMNIST(
-    root='./data'
-    , train=True
-    , download=True
-    , transform=transforms.Compose([
+    root='./data', train=True, download=True, transform=transforms.Compose([
         transforms.ToTensor()
     ])
 )
 
 
-def get_all_preds(model, loader):
+def get_all_preds(model: Network, loader: torch.utils.data.dataloader.DataLoader) -> torch.Tensor:
     all_preds = torch.tensor([])
     for batch in loader:
         images, labels = batch
         preds = model(images)
         all_preds = torch.cat((all_preds, preds), dim=0)
     return all_preds
+
 
 with torch.no_grad():
     prediction_loader = torch.utils.data.DataLoader(train_set, batch_size=10000)
@@ -51,7 +52,7 @@ with torch.no_grad():
 preds_correct = get_num_correct(train_preds, train_set.targets)
 
 print(f'correctly predicted images: {preds_correct} of {len(train_set)}')
-print('accuracy of prediction:', preds_correct / len(train_set))
+print(f'accuracy of prediction: {round((preds_correct / len(train_set))*100, 2)} %')
 
 stacked = torch.stack((train_set.targets, train_preds.argmax(dim=1)), dim=1)
 cmt = torch.zeros(10, 10, dtype=torch.int32)
@@ -64,8 +65,3 @@ plt.figure(figsize=(10, 8))
 plot_confusion_matrix(cm, names)
 
 print("time elapsed: {:.2f}s".format(time.time() - start_time))
-
-
-
-
-

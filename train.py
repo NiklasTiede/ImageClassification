@@ -1,22 +1,24 @@
 """ Training script to train the weights of the
 CNN Network for image recognition. """
+import time
+from collections import OrderedDict
 
 import torch
-import torch.optim as optim
 import torch.nn.functional as F
+import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+from model import Network
+from utils.run_tools import RunBuilder
+from utils.run_tools import RunManager
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True)
 
-from collections import OrderedDict
-import time
 start_time = time.time()
 
-from model import Network
-from utils.run_tools import RunManager, RunBuilder
 
 # how to use only GPU for training?  -> still to be implemented
 # use_gpu = True if torch.cuda.is_available() else False  # rest of the code?
@@ -24,12 +26,8 @@ from utils.run_tools import RunManager, RunBuilder
 # splitting the classes into another file ! getting a good structure and add docstrings and annotations to everything !
 
 
-
 train_set = torchvision.datasets.FashionMNIST(
-    root='./data'
-    , train=True
-    , download=True
-    , transform=transforms.Compose([
+    root='./data', train=True, download=True, transform=transforms.Compose([
         transforms.ToTensor()
     ])
 )
@@ -97,12 +95,3 @@ torch.save(network.state_dict(), PATH)
 
 
 # tensorboard --logdir=runs
-
-
-
-
-
-
-
-
-

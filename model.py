@@ -11,7 +11,7 @@ torch.set_grad_enabled(True)
 
 #
 class Network(nn.Module):
-    def __init__(self):
+    def __init__(self) -> None:
         super(Network, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5)
         self.conv2 = nn.Conv2d(in_channels=6, out_channels=12, kernel_size=5)
@@ -20,7 +20,7 @@ class Network(nn.Module):
         self.fc2 = nn.Linear(in_features=120, out_features=60)
         self.out = nn.Linear(in_features=60, out_features=10)
 
-    def forward(self, t):
+    def forward(self, t: torch.Tensor) -> torch.Tensor:
         t = F.relu(self.conv1(t))
         t = F.max_pool2d(t, kernel_size=2, stride=2)
 
@@ -34,7 +34,6 @@ class Network(nn.Module):
 
 # if I import the Network from the training folder... a training cycle is started !
 # But I just want to import the network
-
 
 
 # pulling the variables out of the class
@@ -116,7 +115,6 @@ class Network(nn.Module):
 # # print(network.conv2.weight)
 
 
-
 # Network parameters to be iterated: (using list as datatype)
 # input_chan       = [1]
 # conv1out_conv2in = [6, 19]
@@ -194,7 +192,6 @@ class Network(nn.Module):
 # better to move these variables also out !
 
 
-
 #
 # from collections import OrderedDict
 #
@@ -211,14 +208,3 @@ class Network(nn.Module):
 #     fc2out_outin=[60],
 #     out_feat=[10]
 # )
-
-
-
-
-
-
-
-
-
-
-

@@ -1,21 +1,23 @@
 """ Tools helping to record data of training run, to facilitate the
  comparison of different hyperparameters """
+import json
+import time
+from collections import namedtuple
+from collections import OrderedDict
+from itertools import product
+
+import pandas as pd
 import torch
 import torchvision
+from IPython.display import clear_output
+from IPython.display import display
 from torch.utils.tensorboard import SummaryWriter
 
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True)
 
-from collections import OrderedDict
-from IPython.display import display, clear_output
-import time
 start_time = time.time()
-import json
-import pandas as pd
 
-from collections import namedtuple
-from itertools import product
 
 # how to use only GPU for training?  -> still to be implemented
 # use_gpu = True if torch.cuda.is_available() else False  # rest of the code?
@@ -87,7 +89,8 @@ class RunManager():
         results["accuracy"] = accuracy
         results['epoch duration'] = epoch_duration
         results['run duration'] = run_duration
-        for k, v in self.run_params._asdict().items(): results[k] = v
+        for k, v in self.run_params._asdict().items():
+            results[k] = v
         self.run_data.append(results)
         df = pd.DataFrame.from_dict(self.run_data, orient='columns')
 
@@ -107,8 +110,7 @@ class RunManager():
     def save(self, fileName):
 
         pd.DataFrame.from_dict(
-            self.run_data
-            , orient='columns'
+            self.run_data, orient='columns'
         ).to_csv(f'{fileName}.csv')
 
         with open(f'{fileName}.json', 'w', encoding='utf-8') as f:
@@ -126,4 +128,3 @@ class RunBuilder():  # iterating hyperparameters
             runs.append(Run(*v))
 
         return runs
-
