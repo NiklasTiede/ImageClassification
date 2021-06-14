@@ -1,5 +1,5 @@
-torch
-torchvision
-tensorboard
 matplotlib
 numpy
+tensorboard
+torch
+torchvision
