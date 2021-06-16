@@ -1,10 +1,12 @@
 import itertools
+from typing import Any
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues):
+def plot_confusion_matrix(cm: np.ndarray, classes: Any, normalize: bool = False, title: str = 'Confusion matrix', cmap: matplotlib.colors.LinearSegmentedColormap = plt.cm.Blues) -> None:
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
         print("Normalized confusion matrix")

@@ -8,12 +8,12 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader
-from torch.utils.tensorboard import SummaryWriter
 
 from model import Network
 from utils.run_tools import RunBuilder
 from utils.run_tools import RunManager
+# from torch.utils.data import DataLoader
+# from torch.utils.tensorboard import SummaryWriter
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True)
 
@@ -37,26 +37,31 @@ params = OrderedDict(
     lr=[.01],
     batch_size=[1000],
     shuffle=[False],
-    input_chan=[1],
-    conv1out_conv2in=[6],
-    kernsize_conv1=[5],
-    conv2out_fc1in=[12],
-    kernsize_conv2=[5],
-    fc1out_fc2in=[120],
-    fc2out_outin=[60],
-    out_feat=[10]
+    # input_chan=[1],
+    # conv1out_conv2in=[6],
+    # kernsize_conv1=[5],
+    # conv2out_fc1in=[12],
+    # kernsize_conv2=[5],
+    # fc1out_fc2in=[120],
+    # fc2out_outin=[60],
+    # out_feat=[10]
 )
 
 
 b = RunBuilder()
 m = RunManager()
 
-for run in b.get_runs(params):
+b.get_runs(params)
 
-    network = Network(input_chan=run.input_chan, conv1out_conv2in=run.conv1out_conv2in, kernsize_conv1=run.kernsize_conv1,
-                      conv2out_fc1in=run.conv2out_fc1in, kernsize_conv2=run.kernsize_conv2, fc1out_fc2in=run.fc1out_fc2in,
-                      fc2out_outin=run.fc2out_outin, out_feat=run.out_feat)
+for run in RunBuilder.get_runs(params):
+    print('print run:', type(run))
+    # network = Network(input_chan=run.input_chan, conv1out_conv2in=run.conv1out_conv2in, kernsize_conv1=run.kernsize_conv1,
+    #                   conv2out_fc1in=run.conv2out_fc1in, kernsize_conv2=run.kernsize_conv2, fc1out_fc2in=run.fc1out_fc2in,
+    #                   fc2out_outin=run.fc2out_outin, out_feat=run.out_feat)
+    network = Network()
+    print('network:', type(network))
     loader = torch.utils.data.DataLoader(train_set, batch_size=run.batch_size)  # , shuffle=run.shuffle, drop_last=True)
+    print('loader type:',type(loader))
     optimizer = optim.Adam(network.parameters(), lr=run.lr)
 
     m.begin_run(run, network, loader)
@@ -79,12 +84,12 @@ for run in b.get_runs(params):
 
         m.end_epoch()
     m.end_run()
-m.save('results')
+# m.save('results/results')
 
 print("time elapsed: {:.2f}s".format(time.time() - start_time))
 
-PATH = './SavedModel.pth'  # give it a certain name, and saving it on another place? how to access each layer??
-torch.save(network.state_dict(), PATH)
+# PATH = './CurrentSavedModel.pth'  # give it a certain name, and saving it on another place? how to access each layer??
+# torch.save(network.state_dict(), PATH)
 
 # more accurate:
 # torch.save({'epoch': epoch,   # if you want to create a checkpoint for continuing training

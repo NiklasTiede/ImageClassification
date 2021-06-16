@@ -1,7 +1,7 @@
 """ the confusion matrix of the MNIST dataset of the trained neural net (with
 best hyperparameters) is calculated and plotted. """
 import time
-
+from typing import Union, Any
 import matplotlib.pyplot as plt
 import torch
 import torchvision
@@ -22,10 +22,10 @@ start_time = time.time()
 # predictions (on cpu):
 
 network = Network()
-network.load_state_dict(torch.load('results/SavedModel.pth'))  # loads the saved models weights etc.
+network.load_state_dict(torch.load('best_result/SavedModel.pth'))  # loads the saved models weights etc.
 
 
-def get_num_correct(preds: torch.Tensor, labels: torch.Tensor) -> int:
+def get_num_correct(preds: torch.Tensor, labels: torch.Tensor) -> Union[int, float, bool]:
     return preds.argmax(dim=1).eq(labels).sum().item()
 
 
@@ -36,7 +36,7 @@ train_set = torchvision.datasets.FashionMNIST(
 )
 
 
-def get_all_preds(model: Network, loader: torch.utils.data.dataloader.DataLoader) -> torch.Tensor:
+def get_all_preds(model: Network, loader: Any) -> torch.Tensor:
     all_preds = torch.tensor([])
     for batch in loader:
         images, labels = batch
@@ -61,6 +61,7 @@ for p in stacked:
     cmt[tl, pl] += 1
 cm = confusion_matrix(train_set.targets, train_preds.argmax(dim=1))
 names = tuple(train_set.classes)
+
 plt.figure(figsize=(10, 8))
 plot_confusion_matrix(cm, names)
 
