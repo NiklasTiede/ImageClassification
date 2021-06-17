@@ -5,19 +5,23 @@ import time
 from collections import namedtuple
 from collections import OrderedDict
 from itertools import product
-from typing import List, Any, Union, Optional
+from typing import Any
+from typing import List
+from typing import Optional
+from typing import Union
+
 import pandas as pd
 import torch
 import torchvision
 from IPython.display import clear_output
 from IPython.display import display
 from torch.utils.tensorboard import SummaryWriter
+
 import model
 torch.set_printoptions(linewidth=120)
 torch.set_grad_enabled(True)
 
 start_time = time.time()
-
 
 # how to use only GPU for training?  -> still to be implemented
 # use_gpu = True if torch.cuda.is_available() else False  # rest of the code?
@@ -37,7 +41,7 @@ class RunManager():
 
         self.network: Optional[model.Network] = None
         self.loader = None
-        self.tb = None
+        self.tb: Optional[torch.utils.tensorboard.writer.SummaryWriter] = None
 
     def begin_run(self, run: Any, network: model.Network, loader: Any) -> None:
 

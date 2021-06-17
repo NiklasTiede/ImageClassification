@@ -1,5 +1,9 @@
 
 todo.txt
+results/
+experiments/
+tests/
+
 
 # IDEs
 .idea/

@@ -61,7 +61,7 @@ for run in RunBuilder.get_runs(params):
     network = Network()
     print('network:', type(network))
     loader = torch.utils.data.DataLoader(train_set, batch_size=run.batch_size)  # , shuffle=run.shuffle, drop_last=True)
-    print('loader type:',type(loader))
+    print('loader type:', type(loader))
     optimizer = optim.Adam(network.parameters(), lr=run.lr)
 
     m.begin_run(run, network, loader)

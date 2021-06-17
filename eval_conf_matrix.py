@@ -1,7 +1,9 @@
 """ the confusion matrix of the MNIST dataset of the trained neural net (with
 best hyperparameters) is calculated and plotted. """
 import time
-from typing import Union, Any
+from typing import Any
+from typing import Union
+
 import matplotlib.pyplot as plt
 import torch
 import torchvision

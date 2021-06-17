@@ -13,7 +13,7 @@ repos:
     -   id: check-yaml
     -   id: debug-statements
     -   id: name-tests-test
-        exclude: tests/check_names.py
+        # exclude: tests/check_names.py
     -   id: requirements-txt-fixer
     -   id: detect-private-key
 
@@ -37,3 +37,4 @@ repos:
     rev: v0.902
     hooks:
     -   id: mypy
+        exclude: utils/run_tools.py
